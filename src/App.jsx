@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import Entete from './Entete';
 import PiedPage from './PiedPage';
 import ListeProduits from './ListeProduits';
