@@ -1,4 +1,13 @@
 import './Produit';
-export default function Produit() {
-
+export default function Produit(props) {
+    console.log(props);
+    return (
+        <article className="Produit">
+                    <img src={"images-produits/" + props.pid + ".webp"} alt={props.nom} />
+                    <div className="titre">{props.nom}</div>
+                    <div className="prix">{props.prix}</div>
+                    <button>Ajouter au panier</button> 
+        </article>
+                
+    );
 }
