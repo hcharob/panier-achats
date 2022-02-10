@@ -1,0 +1,16 @@
+.Produit {
+    text-align: center;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    background-color: rgb(243, 245, 247);
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
+    .titre {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .prix::after {
+        content: ' $CA';
+    }
+}
