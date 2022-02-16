@@ -2,7 +2,8 @@ import './ListeProduits.scss';
 import Produit from './Produit';
 import lesProduits from './data/produits.json';
 
-export default function ListeProduits() {
+export default function ListeProduits(props) {
+    
     // console.log('La variable lesProduits : ', lesProduits);
     // Méthode 1 (programmation impérative avec une boucle for)
     // let composantsProduits = [];
@@ -26,7 +27,7 @@ export default function ListeProduits() {
         <h2>Nos produits</h2>
             <div className="produits">
             {
-             lesProduits.map(produit => <Produit key={produit.id} nom={produit.nom} prix={produit.prix}  pid={produit.id} />)
+             lesProduits.map(produit => <Produit panier={props.lePanier} setPanier={setPanier} key={produit.id} nom={produit.nom} prix={produit.prix}  pid={produit.id} />)
             }
             </div>
     </section>
