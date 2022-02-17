@@ -5,33 +5,35 @@ export default function Produit(props) {
     let panier = props.panier;
     let setPanier = props.setPanier;
     let qte = 0;
-
-    if (panier[props.pid]) {
+    if(panier[props.pid]) {
         qte = panier[props.pid].qte;
     }
-
-    console.log("Quantité du produit: ", props.pid, " : ", qte);
+    console.log("Quantité du produit : ", props.pid, " : ", qte);
 
     function ajouterAuPanier() {
         panier[props.pid] = {
             prix: props.prix,
-            qte:1
+            qte: 1
         };
-        console.log ("Panier: ", panier);
-        //Notifier React que le panier a changé
-        setPanier(...panier);
-
-        //Mettre à jour le badge du bouton
-        // Mettre à jour le badge du Panier dans Entête
+        console.log("Panier : ", panier);
+        // Notifier React que le panier a changé : 
+        setPanier({...panier});
     }
-    
+
     return (
         <article className="Produit">
-                    <img src={"images-produits/" + props.pid + ".webp"} alt={props.nom} />
-                    <div className="titre">{props.nom}</div>
-                    <div className="prix">{props.prix}</div>
-                   <BtnAjoutPanier qte={qte} onClick={ajouterAuPanier} />
+            <img src={"images-produits/" + props.pid + ".webp"} alt={props.nom} />
+            <div className="titre">{props.nom}</div> 
+            <div className="prix">{props.prix}</div>
+            <BtnAjoutPanier qte={qte} onClick={ajouterAuPanier} />
         </article>
-                
     );
 }
+
+/*
+let art = document.createElement('article);
+art.setAttribute('class, 'Produit');
+let img = document.createElement('img);
+...
+art.appendChild('img');
+*/

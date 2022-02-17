@@ -3,8 +3,8 @@ import Produit from './Produit';
 import lesProduits from './data/produits.json';
 
 export default function ListeProduits(props) {
-    
-    // console.log('La variable lesProduits : ', lesProduits);
+    return (
+     // console.log('La variable lesProduits : ', lesProduits);
     // Méthode 1 (programmation impérative avec une boucle for)
     // let composantsProduits = [];
     // //Parcourir le tableau lesProduits et générer un composant Produit pour chaque élément
@@ -22,14 +22,14 @@ export default function ListeProduits(props) {
     // Remarquer l'utilisation des fonctions fléchées et de la méthode map(), map créé un nouveau tableau
     // let notesArrondies = notes.map(uneNote => uneNote.toFixed(1)-0); //Fonction fléchée what is thisss
 
-    return (
-    <section className="ListeProduits">
-        <h2>Nos produits</h2>
+
+        <section className="ListeProduits">
+            <h2>Nos produits</h2>
             <div className="produits">
-            {
-             lesProduits.map(produit => <Produit panier={props.lePanier} setPanier={setPanier} key={produit.id} nom={produit.nom} prix={produit.prix}  pid={produit.id} />)
-            }
+                {
+                    lesProduits.map(p => <Produit panier={props.panier} setPanier={props.setPanier} key={p.id} nom={p.nom} prix={p.prix} pid={p.id} />)
+                }
             </div>
-    </section>
+        </section>
     );
 }

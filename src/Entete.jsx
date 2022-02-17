@@ -3,18 +3,16 @@ import ShoppingCartSharpIcon from '@mui/icons-material/ShoppingCartSharp';
 import Badge from '@mui/material/Badge';
 
 export default function Entete(props) {
-    console.log("Le panier dans entête : ", props);
+    console.log("Les props du composant Entête : ", props);
+    console.log("Le panier dans Entête : ", props.panier);
     return (
-        // la nom de la classe a tjrs le meme nom que la fonction
-        <header className="Entete"> 
+        <header className="Entete">
             <h1>Magasin général</h1>
             <nav>
-            
-                <Badge badgeContent={Object.values(props.lePanier).length} color="secondary">
+                <Badge badgeContent={Object.values(props.panier).length} color="secondary">
                     <ShoppingCartSharpIcon/>
                 </Badge>
-           
-            <a href="#">Contactez-nous</a>
+                <a href="#">Contactez-nous</a>
             </nav>
         </header>
     );
