@@ -2,11 +2,11 @@ import './App.scss';
 import Entete from './Entete';
 import PiedPage from './PiedPage';
 import ListeProduits from './ListeProduits';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 function App() {
-  //Pour commencer, ça doit être un objet vide
-  const etatPanier = useState({});
+  //Les fonctions flèches ont un return
+  const etatPanier = useState(() => JSON.parse(window.localStorage.getItem('panier-4pa')) || {}); 
 
   //Variable
   const panier = etatPanier[0];
@@ -39,6 +39,11 @@ function App() {
 
   // 0 est l'état initial de la variable
   // const [couleur, setCouleur] = useState(0);
+
+  //"Persister" (sauvegarder) le panier dans localStorage
+  //Utiliser le HOOK useEffect pour executer ce code de façon contrôlée
+  //SI on mets des variable, le useEffect est utilisé en même temps que la variable utilisée, soit panier
+  useEffect( () => window.localStorage.setItem('panier-4pa', JSON.stringify(panier)), [panier] );
 
   return (
     <div className="App">
