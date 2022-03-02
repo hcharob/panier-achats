@@ -3,6 +3,10 @@ import Entete from './Entete';
 import PiedPage from './PiedPage';
 import ListeProduits from './ListeProduits';
 import {useEffect, useState} from 'react';
+import {Routes, Route} from 'react-router-dom'
+import Accueil from './Accueil';
+import Histoire from './Histoire';
+
 
 function App() {
   //Les fonctions flèches ont un return
@@ -41,15 +45,21 @@ function App() {
   // const [couleur, setCouleur] = useState(0);
 
   //"Persister" (sauvegarder) le panier dans localStorage
-  //Utiliser le HOOK useEffect pour executer ce code de façon contrôlée
+  //Utiliser le HOOK useEffect pour executer ce code de façon contrôlée, POUR LE PROTÉGER... ithink
   //SI on mets des variable, le useEffect est utilisé en même temps que la variable utilisée, soit panier
+
+  //À chaque fois que le panier change
   useEffect( () => window.localStorage.setItem('panier-4pa', JSON.stringify(panier)), [panier] );
 
   return (
     <div className="App">
       <Entete panier={panier} test="Allo Props" />
-       { /*le premier etatPanier est une variable qu'on défini*/ }
-      <ListeProduits etatPanier={etatPanier} />
+      <Routes>
+        <Route path='/' element={<Accueil/>} > </Route>
+        <Route path='/notre-histoire' element={<Histoire/>}> </Route>
+        <Route path='/nos-produits' element={<ListeProduits etatPanier={etatPanier}/> }> </Route> 
+      </Routes>
+
 
       <div>
         <span>Nombre de clics: <i>{compteur}</i> </span>        

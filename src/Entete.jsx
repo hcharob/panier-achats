@@ -1,6 +1,7 @@
 import './Entete.scss';
 import ShoppingCartSharpIcon from '@mui/icons-material/ShoppingCartSharp';
 import Badge from '@mui/material/Badge';
+import {NavLink} from 'react-router-dom';
 
 //Remarquer la destructuration d'objet
 //https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
@@ -22,8 +23,18 @@ export default function Entete({panier}) {
 
     return (
         <header className="Entete">
-            <h1>Magasin général</h1>
-            <nav>
+
+            <h1><NavLink to="/" >Magasin général</NavLink></h1>
+            <nav className="nav-principale">
+                {/* On peut écrire la className de deux façcons */}
+                <NavLink to="/nos-produits" className={({isActive}) => isActive ? 'lien-actif' : ''}> Produits </NavLink>
+                {/* OU  */}
+                 {/* <NavLink to="/notre-histoire" className={(lien) => lien.isActive ? 'lien-actif' : ''}>Notre histoire</NavLink> */}
+                <NavLink to="/notre-histoire" className={({isActive}) => isActive ? 'lien-actif' : ''}>Notre histoire</NavLink>
+               
+            </nav>
+
+            <nav className='nav-secondaire'>
                 {/* Sommaire-panier */}
             <input type="checkbox" id="cc-sommaire-panier" />
             <div className="sommaire-panier">
@@ -44,7 +55,7 @@ export default function Entete({panier}) {
                 <div>
                     <span>Total: </span>
                     <span> {total} </span></div>
-            </div>
+                </div>
                 <Badge badgeContent={totalQte} color="secondary">
                     <label htmlFor="cc-sommaire-panier">  <ShoppingCartSharpIcon/> </label>
                 </Badge>
@@ -65,6 +76,7 @@ export default function Entete({panier}) {
 function calculerInfoPanier(panierAchats) {
     const _sousTotal = panierAchats.reduce((acc, courant) => acc + courant.qte * courant.prix, 0);
     const _taxes = _sousTotal * 0.14975;
+
     return {
         //Le permier nom est juste un étiquette
         articlesDifferents: panierAchats.length,
