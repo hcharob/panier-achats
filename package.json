@@ -1,6 +1,6 @@
 {
   "remarque-importante": "Pour publier sur GH Pages, renommer la prochaine pro 'homepage'",
-  "homepage-ghpages": "https://hcharob.github.io/panier-achats",
+  "homepage": "https://hcharob.github.io/panier-achats",
   "name": "panier-achats",
   "version": "0.1.0",
   "private": true,
