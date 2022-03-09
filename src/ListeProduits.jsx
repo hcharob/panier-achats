@@ -1,8 +1,19 @@
 import './ListeProduits.scss';
 import Produit from './Produit';
-import lesProduits from './data/produits.json';
+import { useState, useEffect } from 'react';
+import { bdFirestore as bd } from './firebase/init';
+import { collection, getDocs } from "firebase/firestore"; 
 
 export default function ListeProduits({etatPanier}) {
+    const [produits, setProduits] = useState ([]);
+    //Obtenir les produits de la collection FIrestore
+    useEffect(function() {
+    //Obtenir tous les documents de la collection 'maggen-produits'
+    getDocs(collection(bd, 'maggen-produits')).then (
+        qs => setProduits(qs.docs.map(doc => ({id: doc.id, ...doc.data()})))
+        );
+    }, []); //prends une fonction et un tableau de dépendace pour l'exécuter une seule fois
+
     return (
      // console.log('La variable lesProduits : ', lesProduits);
     // Méthode 1 (programmation impérative avec une boucle for)
@@ -22,12 +33,11 @@ export default function ListeProduits({etatPanier}) {
     // Remarquer l'utilisation des fonctions fléchées et de la méthode map(), map créé un nouveau tableau
     // let notesArrondies = notes.map(uneNote => uneNote.toFixed(1)-0); //Fonction fléchée what is thisss
 
-
         <section className="ListeProduits">
             <h2>Nos produits</h2>
             <div className="produits">
                 {
-                    lesProduits.map(p => <Produit etatPanier={etatPanier} key={p.id} nom={p.nom} prix={p.prix} pid={p.id} />)
+                    produits.map(p => <Produit etatPanier={etatPanier} key={p.id} nom={p.nom} prix={p.prix} pid={p.id} />)
                 }
             </div>
         </section>
