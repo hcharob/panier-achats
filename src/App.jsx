@@ -6,67 +6,54 @@ import {useEffect, useState} from 'react';
 import {Routes, Route} from 'react-router-dom'
 import Accueil from './Accueil';
 import Histoire from './Histoire';
-
+import { authFirebase, authGoogle } from './firebase/init';
+import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
 
 function App() {
-  //Les fonctions flèches ont un return
   const etatPanier = useState(() => JSON.parse(window.localStorage.getItem('panier-4pa')) || {}); 
 
   //Variable
   const panier = etatPanier[0];
-  // const setPanier = etatPanier[1];
-
-  // option 2, destructuration de tableau
-  // const [panier, setPanier] = useState({});
-
-  // console.log("L'état panier : ", panier);
-
-  // let panier = {
-  //     prd0003: {
-  //       prix: 13.95,
-  //       qte: 5
-  //     }
-  //     prd0001: {
-  //       prix: 9.95,
-  //       qte: 2
-  //     },
-  //     prd0004: {
-  //       prix: 11.95,
-  //       qte: 18
-  //     }
-  // };
-
-  // let compteurClic = 0;
-
-  // 1er et 2e élément d'un tableau
-  const [compteur, setCompteur] = useState(0);
-
-  // 0 est l'état initial de la variable
-  // const [couleur, setCouleur] = useState(0);
 
   //"Persister" (sauvegarder) le panier dans localStorage
   //Utiliser le HOOK useEffect pour executer ce code de façon contrôlée, POUR LE PROTÉGER... ithink
-  //SI on mets des variable, le useEffect est utilisé en même temps que la variable utilisée, soit panier
+  //Si on mets des variable, le useEffect est utilisé en même temps que la variable utilisée, soit panier
 
   //À chaque fois que le panier change
   useEffect( () => window.localStorage.setItem('panier-4pa', JSON.stringify(panier)), [panier] );
 
+  //État de l'utilisateur connecté
+  const [util, setUtil] = useState(null);
+
+  /**
+   * Déclenche le processus d'authentificaion avec Google Auth Prodivder
+   */
+  function connexion() {
+    //Référence firebase, référence provider
+    signInWithPopup(authFirebase, authGoogle).then (
+      objUserGoogle => setUtil(objUserGoogle.user)
+    ); 
+  }
+
+  // Attacher un "observateur" de changement d'état de connexion (gestionnaire d'événement de Firebase Authentification)
+  useEffect(() => onAuthStateChanged(authFirebase, user => setUtil(user)), [util]);
+  
   return (
     <div className="App">
-      <Entete panier={panier} test="Allo Props" />
-      <Routes>
-        <Route path='/' element={<Accueil/>} > </Route>
-        <Route path='/notre-histoire' element={<Histoire/>}> </Route>
-        <Route path='/nos-produits' element={<ListeProduits etatPanier={etatPanier}/> }> </Route> 
-      </Routes>
-
-
-      <div>
-        <span>Nombre de clics: <i>{compteur}</i> </span>        
-        <button onClick={ () => {setCompteur(compteur+1); console.log('Compteur des clics : ', compteur);} }> Cliquez-moi </button>
-      </div>
-
-      <PiedPage />
+        {
+          util ?
+          <>
+          <Entete util={util} setUtil={setUtil} panier={panier} test="Allo Props" />
+          <Routes>
+            <Route path='/' element={<Accueil/>} > </Route>
+            <Route path='/notre-histoire' element={<Histoire/>}> </Route>
+            <Route path='/nos-produits' element={<ListeProduits etatPanier={etatPanier}/> }> </Route> 
+          </Routes>
+          <PiedPage />
+          </>
+          :
+          <button onClick={connexion}>Connexion</button>
+      }    
     </div>
   );
 }

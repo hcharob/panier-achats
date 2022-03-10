@@ -2,14 +2,14 @@ import './ListeProduits.scss';
 import Produit from './Produit';
 import { useState, useEffect } from 'react';
 import { bdFirestore as bd } from './firebase/init';
-import { collection, getDocs } from "firebase/firestore"; 
+import { collection, query, getDocs, where } from "firebase/firestore"; 
 
 export default function ListeProduits({etatPanier}) {
     const [produits, setProduits] = useState ([]);
     //Obtenir les produits de la collection FIrestore
     useEffect(function() {
     //Obtenir tous les documents de la collection 'maggen-produits'
-    getDocs(collection(bd, 'maggen-produits')).then (
+    getDocs(query(collection(bd, 'maggen-produits'), where('prix', '<=', 100))).then (
         qs => setProduits(qs.docs.map(doc => ({id: doc.id, ...doc.data()})))
         );
     }, []); //prends une fonction et un tableau de dépendace pour l'exécuter une seule fois

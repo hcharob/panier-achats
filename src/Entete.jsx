@@ -2,28 +2,23 @@ import './Entete.scss';
 import ShoppingCartSharpIcon from '@mui/icons-material/ShoppingCartSharp';
 import Badge from '@mui/material/Badge';
 import {NavLink} from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import { authFirebase } from './firebase/init';
+import { signOut } from '@firebase/auth';
 
 //Remarquer la destructuration d'objet
 //https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
-export default function Entete({panier}) {
+export default function Entete({panier, util, setUtil}) {
+    console.log("Propriété 'user' de l'objet GoogleCredential renvoyé par l'authentification fédérée Google :", util);
 
     // Obtenir les 5 infos importantes pour le sommaire panier (on passe le tableau (Array) des valeurs dans l'objet 'panier)
     // const infoPanier = calculerInfoPanier(Object.values(panier));
     //OU
     const {articlesDifferents, articlesTotaux, sousTotal, taxes, total} = calculerInfoPanier(Object.values(panier));
-
-    // console.log("Les props du composant Entête : ", props);
-    // console.log("Le panier dans Entête : ", props.panier);
-
-    // let {panier, test} = props;
-    // const panier = props.panier;
-    // console.log("Le panier (Entete) : ", panier);
-    // console.log("Le tableau des valeurs du panier", Object.values(panier));
     let totalQte = Object.values(panier).reduce((acc, article) => acc+article.qte, 0);
 
     return (
         <header className="Entete">
-
             <h1><NavLink to="/" >Magasin général</NavLink></h1>
             <nav className="nav-principale">
                 {/* On peut écrire la className de deux façcons */}
@@ -56,10 +51,16 @@ export default function Entete({panier}) {
                     <span>Total: </span>
                     <span> {total} </span></div>
                 </div>
+                
+                <Avatar alt={util.displayName} src={util.photoURL} />
+                <div>{util.displayName}</div>
+                <button onClick={ () => signOut(authFirebase).then(setUtil(null)) }>Déconnexion</button>
+
                 <Badge badgeContent={totalQte} color="secondary">
                     <label htmlFor="cc-sommaire-panier">  <ShoppingCartSharpIcon/> </label>
                 </Badge>
                 <a href="#">Contactez-nous</a>
+
             </nav>
         </header>
     );
